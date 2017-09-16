@@ -68,3 +68,19 @@ person('Jian', 25,city = extra['city'], job = extra['job']);
 def person(name, age, *, city, job):    # *,代表一个特殊分隔符，其告诉解释器 *,后面的参数为命名关键字参数。
     print("name:", name,"age:", age,"other:", city, job);
 person('Jian', 25,city = extra['city'], job = extra['job']);   #在调用有命名关键字的函数时，必须传入参数名，否则解释器会将其默认为位置参数，导致程序出错。但当命名关键字参数有默认值时，调用函数时可以不输入参数名，直接使用默认值。
+
+#递归函数
+def fact(n):
+    if n == 1:
+        return n;
+    return n * fact(n - 1);
+print("递归函数,解算40的阶乘： %d" %fact(20));
+#尾递归优化,但是在python的解释器中也没有对尾递归进行一个好的优化。
+def fact1(n):
+    return fact_iter(n, 1)
+def fact_iter(num, product):
+    if num == 1:
+        return product;
+    return fact_iter(num - 1, num * product);
+print("尾递归优化后的阶乘算法，计算1000的阶乘：%d" %fact1(1000));
+
