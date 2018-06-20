@@ -188,19 +188,158 @@
 
 
 # 广度优先搜索算法
+#
+# # 创建人际关系图
+# graph = {}
+# graph['you'] = ['alice', 'bob', 'claire']
+# graph['bob'] = ['anuj', 'peggy']
+# graph['alice'] = ['peggy']
+# graph['claire'] = ['thom', 'jonny']
+# graph['anuj'] = []
+# graph['peggy'] = []
+# graph['thom'] = []
+# graph['jonny'] = []
+#
+# # 暂时将这个函数作为，判断搜索结果的函数
+# def person_is_seller(name):
+#     return name[-1] == 'm'
+#
+# import collections # 引进该模块用于创建队列
+#
+# # 编写相应的广度优先算法
+# def search(name):
+#     search_queue = collections.deque()  # 创建一个双端队列
+#     search_queue += graph[name] # 将第一个节点的邻居添加都搜索队列中
+#     searched = [] # 该列表用于记录检查过的人，防止搜索进入死循环
+#     while search_queue:
+#         person = search_queue.popleft() # 将双端队列中最左边的元素提取出来
+#         if person not in searched:
+#             if person_is_seller(person):
+#                 print(person + ' is a mango seller!')
+#                 return True
+#             else:
+#                 print(person)
+#                 search_queue += graph[person]
+#                 searched.append(person)
+#     return False
+#
+# search('you')
 
-# 创建人际关系图
+
+# 狄克特斯拉算法
+
+# 定义查找未处理的节点中开销最低的节点
+def find_lowest_cost_node(costs):
+    lowest_cost = float('inf')
+    lowest_cost_node = None
+    for node in costs:
+        cost = costs[node]
+        if cost < lowest_cost and node not in processed:
+            lowest_cost = cost
+            lowest_cost_node = node
+    return lowest_cost_node
+
+# 狄克斯特拉函数
+def dikesitela_search(graph, costs, parents, processed):
+    node = find_lowest_cost_node(costs)
+    while node is not None:
+        cost = costs[node]
+        neighbors = graph[node]
+        for n in neighbors.keys():
+            new_cost = cost + neighbors[n]
+            if costs[n] > new_cost:
+                costs[n] = new_cost
+                parents[n] = node
+        processed.append(node)
+        node = find_lowest_cost_node(costs)
+
+# 定义一个显示路径的函数
+def show_path(parents, list_path, finishing_node):
+    n = finishing_node
+    if n == None:
+        list_path.reverse()
+        return list_path
+    else :
+        list_path.append(n)
+        node_name = parents[n]
+        return show_path(parents, list_path, node_name)
+
+# 构建graph
 graph = {}
-graph['you'] = ['alice', 'bob', 'claire']
-graph['bob'] = ['anuj', 'peggy']
-graph['alice'] = ['peggy']
-graph['claire'] = ['thom', 'jonny']
-graph['anuj'] = []
-graph['peggy'] = []
-graph['thom'] = []
-graph['jonny'] = []
+graph['start'] = {}
+graph['start']['a'] = 6
+graph['start']['b'] = 2
 
-import collections
+graph['a'] = {}
+graph['a']['fin'] = 1
+
+graph['b'] = {}
+graph['b']['a'] = 3
+graph['b']['fin'] = 5
+
+graph['fin'] = {}
+
+# 构建costs
+costs = {}
+infinity = float('inf')
+costs['a'] = 6
+costs['b'] = 2
+costs['fin'] = infinity
+
+# 构建parents
+parents = {}
+parents['start'] = None
+parents['a'] = 'start'
+parents['b'] = 'start'
+parents['fin'] = None
+
+# 构建processed列表
+processed = []
+
+# 构建graph1
+graph1 = {}
+graph1['start'] = {}
+graph1['start']['a'] = 5
+graph1['start']['b'] = 2
+
+graph1['a'] = {}
+graph1['a']['c'] = 4
+graph1['a']['d'] = 2
+
+graph1['b'] = {}
+graph1['b']['a'] = 8
+graph1['b']['d'] = 7
+
+graph1['c'] = {}
+graph1['c']['d'] = 6
+graph1['c']['fin'] = 3
+
+graph1['d'] = {}
+graph1['d']['fin'] = 1
+
+graph1['fin'] = {}
+
+# 构建costs
+costs1 = {}
+infinity = float('inf')
+costs1['a'] = 5
+costs1['b'] = 2
+costs1['c'] = infinity
+costs1['d'] = infinity
+costs1['fin'] = infinity
+
+# 构建parents
+parents1 = {}
+parents1['start'] = None
+parents1['a'] = 'start'
+parents1['b'] = 'start'
+
+
+# 将构建好的数据代入算法中求解。
+dikesitela_search(graph1, costs1, parents1, processed)
+path_list = []
+path = show_path(parents1,path_list, finishing_node='fin')
+print(path)
 
 
 
